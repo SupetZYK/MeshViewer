@@ -3,8 +3,12 @@
 
 #ifdef WIN32
 	#include <windows.h>
+
+	#include "glut.h"
+#else
+	#include <GL/glut.h>
 #endif
-#include "glut.h"
+
 #include <cstdlib>
 #include "vector3.h"
 
