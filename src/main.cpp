@@ -75,8 +75,12 @@ void SetBoundaryBox(const Vector3d & bmin, const Vector3d & bmax) {
 
 // init openGL environment
 void InitGL() {
-	GLfloat light0Position[] = { 0, 1, 0, 1.0 }; 
-
+	GLfloat light0Position0[] = { 0, 1, 0, 0.0 }; 
+	GLfloat light0Position1[] = { 0, -1, 0, 0.0 };
+	GLfloat light0Position2[] = { 1, 0, 0, 0.0 };
+	GLfloat light0Position3[] = { -1, 0, 0, 0.0 };
+	GLfloat light0Position4[] = { 0, 0, -1, 0.0 };
+	GLfloat light0Position5[] = { 0, 0, -1, 0.0 };
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("Mesh Viewer");
@@ -84,11 +88,13 @@ void InitGL() {
 	glPolygonOffset(1.0, 1.0);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glEnable(GL_COLOR_MATERIAL);
-	glColorMaterial(GL_FRONT, GL_DIFFUSE);
-	glLightfv (GL_LIGHT0, GL_POSITION, light0Position);
-	glEnable(GL_LIGHT0);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	glLightfv (GL_LIGHT0, GL_POSITION, light0Position0);
+	GLfloat lightambient[] = { 0.5,0.5,0.5,1 };
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightambient);
+	//glEnable(GL_LIGHT0);
 
 	glutReshapeFunc(ReshapeFunc);
 	glutDisplayFunc(DisplayFunc);
@@ -272,7 +278,7 @@ void DrawFlatShaded() {
 			const Vector3d & pos2 = f->HalfEdge()->End()->Position();
 			const Vector3d & pos3 = f->HalfEdge()->Next()->End()->Position();
 			Vector3d normal = f->Normal_f();
-
+			glColor3f((normal[0] + 1) / 2, (normal[1] + 1) / 2, (normal[2] + 1) / 2);
 			glNormal3dv(normal.ToArray());
 			glVertex3dv(pos1.ToArray());
 			glVertex3dv(pos2.ToArray());
